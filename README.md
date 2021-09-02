@@ -10,10 +10,10 @@
 
 ## 计算机网络
 
-<img src="image/computer_network.png" height="400" width="400" ></a>
+<img src="image/computer_network.png" height="400" width="400" >
 
 ## 操作系统
-<img src="image/operation_system.png" height="400" width="600" ></a>
+<img src="image/operation_system.png" height="400" width="600" >
 
 ## 面经整理
 [面经整理](https://github.com/EricOo0/interview_prepare/blob/main/%E9%9D%A2%E7%BB%8F%E6%95%B4%E7%90%86.md)
