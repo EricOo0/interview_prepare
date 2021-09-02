@@ -10,4 +10,4 @@
 
 ## 计算机网络
 
-<img src="image/computer_network.png" height="100" width="100" ></a>
+<img src="image/computer_network.png" height="400" width="400" ></a>
