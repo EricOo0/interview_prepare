@@ -13,6 +13,6 @@
 <img src="image/computer_network.png" height="400" width="400" ></a>
 
 ## 操作系统
-<img src="image/operation_system.png" height="400" width="400" ></a>
+<img src="image/operation_system.png" height="400" width="600" ></a>
 
 
