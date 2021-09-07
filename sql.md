@@ -130,6 +130,19 @@ show table status；看表是不是分区表
 information_schema.PARTITIONS 存储分区信息，可以去这张表查    
 SELECT * FROM tr p2;查看这个分区的信息    
 alter table partition_test add partition  (partition p_20210616 values less than (20210616));增加分区  
+
+
+* binlog有几种格式
+>1、Statement：每一条会修改数据的sql都会记录在binlog中。  
+2、不记录sql语句上下文相关信息，仅保存哪条记录被修改  
+3、Mixedlevel: 是以上两种level的混合使用  
+
+* 从binlog恢复数据  
+mysqlbinlog命令  
+mysqlbinlog --start-position=154  --stop-position=513  bin-log.000001 > /path/bak.sql;  
+mysql -uroot -p < /path/bak.sql  
+
+
 * Mysql主从一致：  
 >从库复制主库的binlog日志，执行日志命令来复制（两个线程）  
 1、主从同步作用：  
@@ -161,6 +174,8 @@ alter table partition_test add partition  (partition p_20210616 values less than
 >预先通过编译和存储在数据库的一段sql命令集合  
 * 绑定变量
 >减少解析次数，提高效率  
+
+
 * redis:  
     
 >非关系型数据库，是单线程的结构型数据存储(key-value)，用C实现的  

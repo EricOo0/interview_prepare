@@ -51,6 +51,22 @@ public：is a 继承；公有继承的特点是基类的公有成员和保护成
 private：has a;私有继承的特点是基类的公有成员和保护成员都作为派生类的私有成员，并且不能被这个派生类的子类所访问。而基类的私有成员仍然是私有的。  
 protected：has a;保护继承的特点是基类的所有公有成员和保护成员都成为派生类的保护成员，并且只能被它的派生类成员函数或友元访问，基类的私有成员仍然是私有的。
 
+
+//公有继承                      对象访问    成员访问  
+public    -->  public              Y         Y  
+protected -->  protected           N         Y  
+private   -->  private             N         N  
+ 
+//保护继承                      对象访问    成员访问  
+public    -->  protected           N         Y  
+protected -->  protected           N         Y  
+private   -->  protected           N         N  
+ 
+//私有继承                      对象访问    成员访问  
+public    -->  private             N         Y  
+protected -->  private             N         Y  
+private   -->  private             N         N  
+
 * =delete
     
 >C++11中，当我们定义一个类的成员函数时，如果后面使用"=delete"去修饰，那么就表示这个函数被定义为deleted，也就意味着这个成员函数不能再被调用，否则就会出错。
