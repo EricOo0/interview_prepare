@@ -1,10 +1,21 @@
 # SQL&&Redis  
 
+<details>
+
+<summary>结构</summary>
+
 * 结构：  
 
 >应用层：连接处理--连接池，用户鉴权，安全处理
 MySQL服务层：提供数据管理，sql解释，优化等
 存储引擎层：实际存储数据的系统
+
+</details>
+
+<details>
+
+<summary>Sql搜索可以考虑的数据结构</summary>
+
 * Sql搜索可以考虑的数据结构
 
 >目标：高效，快速  
@@ -15,6 +26,34 @@ B树：有序数组+平衡多叉树；
 每个子节点可以存放多个值，树深度降低，适合查找  
 B+树：有序数组链表+平衡多叉树  
 每个子节点不存放值，只存放索引（地址），在叶子节点存放所有的数据，且用链表链接所有叶子节点（更适合范围查找，减少磁盘IO次数），每次查询需要的次数是一样的  
+
+</details>
+
+<details>
+
+<summary>Redo_log 和 undo_log</summary>
+
+1、概念：
+
+​	undo log是逻辑日志，记录是操作记录日志，redo log是物理日志，记录的是新数据；undo log不是redo log的逆向过程
+
+2、用处：
+
+​	undo log是为了保证事务原子性而设计的，redo log是为了保证事务持久性设置的。
+
+​	undo log在InnoDB中用来实现多版本控制mvcc，执行rollback操作时，undo log可以作为事务回滚的快照读参考。
+
+​	redo log是备份的最新数据位置，系统冗机时，只要重启mysql服务，就可以将未持久保存的数据持久到磁盘
+
+3、redo log：
+
+* 只记录该存储引擎中表的修改，是在物理格式上的日志，它记录的是数据库中每个页的修改。
+
+* MariaDB/MySQL是工作在用户空间的，MariaDB/MySQL的log buffer处于用户空间的内存中。要写入到磁盘上的log file中(redo:ib_logfileN文件,undo:share tablespace或.ibd文件)，中间还要经过操作系统内核空间的os buffer，调用fsync()的作用就是将OS buffer中的日志刷到磁盘上的log file中。
+
+<img src="image/image-20211008112658017.png" alt="image-20211008112658017" style="zoom:40%;" />
+
+</details>
 
 * 四大特性：  
 
@@ -74,12 +113,27 @@ B+树：有序数组链表+平衡多叉树
 
 * 数据库事务隔离：  
 
+>查询隔离等级：SHOW VARIABLES LIKE '%isolation'; or SELECT @@session.transaction_isolation;
+>
+>修改隔离等级：
+>
+>```sql
+>SET [GLOBAL | SESSION] TRANSACTION ISOLATION LEVEL
+>  {
+>       REPEATABLE READ   --可重复读。幻读
+>     | READ COMMITTED   --已提交读 不可重复读
+>     | READ UNCOMMITTED --未提交度 脏读
+>     | SERIALIZABLE
+>   }
+>```
+>
 >同一时间，只允许一个事务请求同一数据，不同的事务之间彼此没有任何干扰。比如A正在从一张银行卡中取钱，在A取钱的过程结束前，B不能向这张卡转账。  
-*  mysql有哪几种锁
+>
+>*  mysql有哪几种锁
 >myisam支持表级锁  
-innodb支持行锁  
-读锁写锁（或者叫排他锁共享锁）
-间隙锁
+>innodb支持行锁  
+>读锁写锁（或者叫排他锁共享锁）
+>间隙锁
 
 
 * MVCC理解
