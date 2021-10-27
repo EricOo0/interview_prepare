@@ -1,7 +1,125 @@
 # C++&&数据结构
 
-* 源文件到可执行文件的过程：
-        
+
+<details>
+
+<summary>STL</summary>
+
+    推荐侯捷老师的C++系列视频
+
+* STL 六大组件
+
+  STL是C++的标准模版库，利用模版为泛型编程提供了基础。
+
+<details>
+
+<summary>容器</summary>
+
+七种基本容器：
+
+* 序列式容器：
+
+  * array：Array:固定长度，不可增长；array.data()可返回数组的第一个元素的地址;实际上就是包装了一个数组，没有构造和析构函数
+
+  * vector：可动态增长（由分配器复制），每当空间不足时，会重新申请一个两倍的空间，将原来空间的数据复制过去;类中包含三个指针start;end；end_of_storage和一个迭代器；
+              .size()返回元素的数量；.capacity()返回可容纳元素的大小>=size()；
+
+  * deque:双向队列，可向两侧动态扩充；在内存空间中时分段连续的;
+
+    deque是分段连续；每段叫一个buffer；内部有个vector：map用来存储各个buffer的指针；迭代器有四个元素：cur（迭代器当前指向元素的地址），first（当前buffer的起始地址），last（当前buffer的最后一个位置）
+      如何模拟连续空间：
+    重载了[]操作符，可以通过下标访问
+    重载操作符++;--;利用控制中心map跳到其他buffer，模拟连续空间
+
+  * list：双向链表，容器内有一个自己类的sort函数
+
+* 非序列式容器：
+
+  * set：底层都是红黑树（高度平衡）;不分keyvalue；有自己的find函数
+
+  * map
+
+  * multiset
+
+  * multimap
+
+    set和map底层为红黑树，自动维护顺序；unordered_map和unordered_set底层是哈希表，由数组和链表实现，防止哈希冲突使用拉链法和开放定址法，还有溢出表法
+
+   ![image relationship](https://github.com/EricOo0/my_repo/blob/master/Image/components.png)
+
+*  不定序容器：
+  unordered_map:底层是vector+链表(hashtable)
+  通过一个散列函数（简单的方法是除以容器大小取余），将对象放到对应下标（节省容器空间）；如果发生碰撞用链表把他们串一起。
+  重哈希：链表太长的时候（元素数量大于bucket长度时），把bucket vector增长（即换2倍长的vector），重新hash
+  篮子buket一定大于元素  
+
+![image structure](https://github.com/EricOo0/my_repo/blob/master/Image/structure.png)
+![image structure2](https://github.com/EricOo0/my_repo/blob/master/Image/unorder_.png)
+
+
+
+</details>
+
+<details>
+
+<summary>迭代器</summary>
+
+iterator--一个泛化的指针，用来操作容器，连接算法和容器的桥梁；算法不需要知道容器的类型和内容，只需要通过迭代器来获取信息或操作。
+
+每种容器都实现了自己的迭代器，通过迭代器可以获得容器内部的数据结构；
+
+内部重载了++，--，*等操作符，简化操作
+
+</details>
+
+<details>
+
+<summary>算法</summary>
+
+用于操作容器内部元素，可以对元素进行排序，搜索，修改等操作；通过迭代器，可以实现一次算法用于不同类型的容器；为所有容器提供一致的算法接口。
+
+</details>
+
+<details>
+
+<summary>分配器</summary>
+
+负责空间配置与管理。
+
+各种容器背后的内存分配都是由allocator实现的。
+
+</details>
+
+<details>
+
+<summary>适配器</summary>
+
+适配器是一种接口类，一种用来修饰容器(container)或仿函数(functor)或迭代器(iterator)接口的东西。
+
+容器适配器：stack,queue都是适配器，基于deque实现，不提供迭代器
+
+迭代器适配器
+
+函数适配器
+
+</details>
+
+<details>
+
+<summary>仿函数</summary>
+
+行为类似函数，就是使一个类的使用看上去象一个函数，具有可配接性。它的具体实现就是通过在类中重载了operator()，使这个类具有了类似函数的行为，就是一个仿函数类了。
+
+
+
+</details>
+
+
+
+</details>
+
+* 源文件到可执行文件的过程：      
+
 编译过程：  
 >预处理：#include文件的展开，宏的替换，注释删除，添加行号和符号标识--产生.i文件 gcc -E main.c main.i  
 编译：翻译代码，产生汇编代码  
@@ -9,7 +127,7 @@
 
 链接过程：  
 >    链接：各个模块独立编译，通过链接将他们组合起来；符号表合并和重定位-编译过程中为确定地址的符号定位到对应地址
-        
+
 * 静态多态和动态多态：
         
 >一种接口，多种方法。  
@@ -22,18 +140,18 @@
 隐藏：如果派生类的函数与基类的函数同名，但是参数不同。此时，不论有无virtual关键字，基类的函数将被隐藏（注意别与重载混淆，重载要求在一个类中）。  
     如果派生类的函数与基类的函数同名，并且参数也相同，但是基类函数没有virtual关键字（虚函数）。此时，基类的函数被隐藏（注意别与覆盖混淆，如果基类中有virtual关键字，而为覆盖）
 * c语言没有函数重载：
-   
+  
 >编译阶段，c++会对函数进行重命名以保证函数名唯一，c语言不会，仅在函数名前加_。
 * 构造函数一般不是虚函数：
-    
+  
 >创建类的时候还没有虚函数表，如果是虚函数无法调用构造函数  
 析构函数一般是虚函数，当基类指针指向子类对象的时候可以释放子类对象的空间（默认不是虚函数因为默认时不会被继承的类）； （父类指针不能访问子类的虚函数）  
 * 纯虚函数，虚函数：  
-    
+
 >父类中没有实现的虚函数是纯虚函数，必须被继承和重写  
 虚函数解决了菱形继承  
 * 哪些函数不可以被继承：
-    
+  
 >构造函数，析构函数，运算符重载  
 子类继承父类时，会有一个默认的自己的构造函数
 * 虚函数表什么时候创建
@@ -41,7 +159,7 @@
 >虚函数表在编译时创建，编译阶段为构造函数增加虚函数表指针赋值的操作。虚函数表存放在常量区rodata
 
 * 指针和引用的区别:  
-    
+  
 >引用只是一个别名，需要先初始化变量，没有分配空间；指针有自己的地址空间；引用不能被改变，好处是传参的适合时候不需要重新开辟空间进行初始化。
 
 * 三种继承方式：
@@ -56,36 +174,36 @@ protected：has a;保护继承的特点是基类的所有公有成员和保护�
 public    -->  public              Y         Y  
 protected -->  protected           N         Y  
 private   -->  private             N         N  
- 
+
 //保护继承                      对象访问    成员访问  
 public    -->  protected           N         Y  
 protected -->  protected           N         Y  
 private   -->  protected           N         N  
- 
+
 //私有继承                      对象访问    成员访问  
 public    -->  private             N         Y  
 protected -->  private             N         Y  
 private   -->  private             N         N  
 
 * =delete
-    
+  
 >C++11中，当我们定义一个类的成员函数时，如果后面使用"=delete"去修饰，那么就表示这个函数被定义为deleted，也就意味着这个成员函数不能再被调用，否则就会出错。
 
 * New和malloc区别：  
-     
+  
 >new/delete是C++关键字，需要编译器支持。  
  malloc/free是库函数，需要头文件支持  
  new不用计算分配大小，malloc需要指定分配大小  
  new返回的是对象类型的指针，malloc返回的是void指针  
  new失败抛出异常，malloc失败返回null
 * 对象的什么函数不能被声明为虚函数  
-    
+
 >构造函数，内联函数inline，静态函数）
 * C++内存布局
-    
+  
 >代码段 全局、静态区 常量区 堆 栈
 * 指针占几个字节：
-    
+  
 >和系统有关，32位机固定占4字节
 * Static关键字：
         
@@ -126,9 +244,9 @@ Static_cast：用于各种隐式转换
 dynamic_cast:动态转换，用于各种类的向上向下转换  
 const_cast：将const转换成非const  
 reinterpret_cast：什么都能转但是有风险  
-  
+
 * 四种智能指针：自动析构指针，防止内存泄漏
-    
+  
 >Shared_ptr循环引用会导致内存泄漏  
 Auto_ptr：c++11弃用；类似unique指针，转移时会出问题，转移所有权时会将原指针置空？  
 Shared_ptr:：共享指针，引用计数  
@@ -137,7 +255,7 @@ Unique_ptr:独占指针
 std:move的作用是用来转移所有权，被转移的对象会被置空？  
 
 * 虚函数表存放位置
-    
+  
 >常量区
 * 拷贝构造可以用值传递吗？
         
@@ -151,10 +269,10 @@ std:move的作用是用来转移所有权，被转移的对象会被置空？
 https://zhuanlan.zhihu.com/p/256202496  
 
 * Set和map
-    
+  
 >都是关联容器，map时key-value，set时key；都不允许修改key，但可以删除，map支持下标索引，底层都是红黑树
 * 编译错误和运行错误：  
-    
+
 >编译错误--编译器可以检测出来，比如语法错误，符号错误等  
 运行错误--代码的逻辑错误，得靠程序员自己检查，编译不会报错，比如内存越界溢出等
 * 哈希表：
@@ -207,43 +325,3 @@ https://zhuanlan.zhihu.com/p/25820535
 >程序员在编写应用程序的时候往往需要将程序的某些数据存储在内存中，然后将其写入某个文件或是将它传输到网络中的另一台计算机上以实现通讯。这个将 程序数据转化成能被存储并传输的格式的过程被称为“序列化”（Serialization），而它的逆过程则可被称为“反序列化” （Deserialization）。  
 protobuf、json、xml  
 https://blog.csdn.net/K346K346/article/details/51754431  
-# STL部分
-
-    推荐侯捷老师的C++系列视频
-
-* STL 六大组件
->      容器container：帮助我们管理内存,存储数据的结构
-      分配器allocator：用来支持容器，帮助容器分配内存
-      算法algorithm：操作容器
-      迭代器iterator：泛化的指针，连接容器和算法
-      适配器adaptor
-      仿函数functor
-      ![image relationship](https://github.com/EricOo0/my_repo/blob/master/Image/components.png)
-    * 容器：
-      序列式容器：
-        Array:固定长度，不可增长；array.data()可返回数组的第一个元素的地址;实际上就是包装了一个数组，没有构造和析构函数
-        Vector：可动态增长（由分配器复制），每当空间不足时，会重新申请一个两倍的空间，将原来空间的数据复制过去;类中包含三个指针start;end；en_of_storage和一个迭代器；
-                .size()返回元素的数量；.capacity()返回可容纳元素的大小>=size()；
-        Deque：双向队列，可向两侧动态扩充；在内存空间中时分段连续的
-              stack，queue时基于deque实现的，这二者是deque的适配器，它们不提供迭代器；
-        分段连续；每段叫一个buffer；内部有个vector：map用来存储各个buffer的指针；迭代器有四个元素：cur（迭代器当前指向元素的地址），first（当前buffer的起始地址），last（当前buffer的最后一个位置）
-    如何模拟连续空间：
-      重载了[]操作符，可以通过下标访问
-      重载操作符++;--;利用控制中心map跳到其他buffer，模拟连续空间
-        List：双向链表，容器内有一个自己类的sort函数
-        forward_List：单向链表
-      关联式容器(适合用于查找，key-value）：
-          set：底层都是红黑树（高度平衡）;不分keyvalue;
-        有自己的find
-          map：底层都是红黑树;（key-value）
-          multiset、multiset：key可以重复
-
-      不定序容器：
-    unordered_map:底层是vector+链表(hashtable)
-    通过一个散列函数（简单的方法是除以容器大小取余），将对象放到对应下标（节省容器空间）
-            如果发生碰撞用链表把他们串一起。
-    重哈希：链表太长的时候（元素数量大于bucket长度时），把bucket vector增长（即换2倍长的vector），重新hash
-    篮子buket一定大于元素  
-
-![image structure](https://github.com/EricOo0/my_repo/blob/master/Image/structure.png)
-![image structure2](https://github.com/EricOo0/my_repo/blob/master/Image/unorder_.png)
