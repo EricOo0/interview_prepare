@@ -116,7 +116,7 @@ iterator--一个泛化的指针，用来操作容器，连接算法和容器的�
 
 #### 常问八股：
 
-<detais>
+<details>
 
 <summary>多态</summary>
 
@@ -159,7 +159,7 @@ iterator--一个泛化的指针，用来操作容器，连接算法和容器的�
 
 </details>
 
-<detais>
+<details>
 
 <summary>继承</summary>
 
