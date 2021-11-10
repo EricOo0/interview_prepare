@@ -356,6 +356,30 @@ https://zhuanlan.zhihu.com/p/25820535
 protobuf、json、xml  
 https://blog.csdn.net/K346K346/article/details/51754431  
 
+* 跳表
+
+> 跳表实际上是一个多级有序链表；插入查找删除的时间复杂度都是O(logn)--空间换时间
+>
+> <img src="image/image-20211110170137735.png" alt="image-20211110170137735" style="zoom:30%;" />
+>
+> 第一级索引是n/2个，第二级是n/4
+>
+> 结构：几个指针和节点值
+>
+> 插入数据：初始情况：在原始链表随机抽n/2个节点所谓上一级索引
+>
+> ​					插入数据时，通过随机数判断是否要加索引
+>
+> <img src="image/image-20211110171130843.png" alt="image-20211110171130843" style="zoom:30%;" />
+>
+> 跳表删除：
+>
+> <img src="image/image-20211110171504348.png" alt="image-20211110171504348" style="zoom:30%;" />
+>
+> 
+>
+> 
+
 * 时间复杂度相关
 
 > 大O表示法表示最坏情况
