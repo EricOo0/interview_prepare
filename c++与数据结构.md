@@ -263,12 +263,21 @@ Size(指针)是4/8
 数组名本身代表的就是数组的起始地址，指针有自己的地址指向数组  
 * Sizeof 和 strlen：
 
+>sizeof是c++的一个关键字，用来计算数据类型所占用内存大小(计算\0)，strlen是函数用来计算字符串长度，以找到\0为终止(不计算\0)；
+>
+>char *c="abcdef"; sizeof(c)是4，c是一个指针，占内存大小4；strlen(c)=6
+>
+>char c[]="abcdef";sizeof(c)=7,多计算一个\0；strlen(c)=6
+>
+>Char c[]={'a','b','c','d','e','f'};sizeof(c)=6;strlen(c)=14--没有\0为终止符号所以返回数不确定
+>
+>char str3[] = {'1','2','3','\0','5','6','7','8'};strlen(str3)=3--以\0为终止
+>
 >算数组长度时sizeof会多1，他计算\0结束符。strlen不算
 
 * 预处理 -> 编译 -> 汇编 -> 链接
 
-* 四种cast转换：  
-        
+* 四种cast转换：        
 >xxx_cast< newtype > (data)  
 Static_cast：用于各种隐式转换  
 dynamic_cast:动态转换，用于各种类的向上向下转换  
